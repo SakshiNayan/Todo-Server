@@ -6,10 +6,11 @@ require("dotenv").config();
 const registerController = require('./routes/register&login')
 
 app.use(cors());
-app.use(express.json())
+
+app.use(express.json({limit:"30mb",extended:true}))
 app.use(express.urlencoded({extended: false}));
 
-app.listen(3001,(err)=>{
+app.listen(process.env.PORT || 3001,(err)=>{
     if(!err){
         console.log("Server connected succesfully at 3001")
     }
