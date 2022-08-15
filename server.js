@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 require("dotenv").config();
 const registerController = require('./routes/register&login')
+const todoController = require ('./routes/todo')
 
 app.use(cors());
 
@@ -26,6 +27,7 @@ mongoose.connect("mongodb://localhost/Todo-assign",()=>{
 });
 
 app.use('/userRegister', registerController);
+app.use('/userTodo', todoController)
 
 
 app.get("/",(req,res)=>{

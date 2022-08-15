@@ -40,10 +40,24 @@ router.post('/login',(req,res)=>{
                 }
             })
         } else {
-            res.status(400).send("Unauthorized user");
+            res.status(400).send("Invalid user");
         }
     })
   
 })
+router.get("/user",(req,res)=>{
+    try {
+      const user = jwt.verify(req.headers.authorization, process.env.SECRET_KEY );
+      UserModal.find({userName : user}).then((data)=>{
+        // console.log(data)
+        res.status(200).send({user: data});
+      }).catch((err)=>{
+        res.status(400).send(err);
+      })
+  } catch(err) {
+      res.status(400).send("Unauthorize user", err)
+  }  
+
+  })
 
 module.exports=router;
