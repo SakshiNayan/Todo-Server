@@ -4,7 +4,7 @@ const jwt=require("jsonwebtoken")
 const todoModal = require("../Modals/todo-modal");
 const UserModal = require("../Modals/register-modal")
 
-router.post("/task", (req, res)=>{
+router.post("/addtask", (req, res)=>{
     try {
         const user = jwt.verify(req.headers.authorization, process.env.SECRET_KEY );
         UserModal.find({userName:user}).then((data)=>{
@@ -12,8 +12,6 @@ router.post("/task", (req, res)=>{
                 todoModal.create({
                     activity:req.body.activity,
                     status: req.body.status,
-                    timetaken: req.body.timetaken,
-                    action:req.body.action
                 }).then(()=>{
                     res.status(200).send("Activity Added")
                 })
@@ -35,7 +33,7 @@ router.get("/todo", (req,res)=>{
     const user = jwt.verify(req.headers.authorization, process.env.SECRET_KEY )
     UserModal.find({userName:user}).then((data)=>{
         if(data.length){
-            todoModal.find({activity}).then((data)=>{
+            todoModal.find({activity:req.body.activity}).then((data)=>{
                 res.status(200).send({task: data})
             })
         } else{
