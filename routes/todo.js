@@ -32,15 +32,17 @@ router.post("/task", (req, res)=>{
 })
 
 router.get("/todo", (req,res)=>{
-    const user = jwt.verify(req.headers.authorization, process.env.SECRET_KEY );
+    const user = jwt.verify(req.headers.authorization, process.env.SECRET_KEY )
     UserModal.find({userName:user}).then((data)=>{
         if(data.length){
-            todoModal.find({activity : data}).then((data)=>{
+            todoModal.find({activity}).then((data)=>{
                 res.status(200).send({task: data})
             })
         } else{
-            res.status(400).send('Uauthorize user')
+            res.status(400).send('Unauthorize user')
         }
-})
+    }).catch((err)=>{
+        res.status(400).send(err.message)
+    })
 });
 module.exports=router
